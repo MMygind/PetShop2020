@@ -9,7 +9,7 @@ namespace PetShopApp.Infrastructure.Static.Data.Repositories
     public class PetRepository: IPetRepository
     {
         private static int id = 1;
-        List<Pet> _pets = new List<Pet>();
+        private static List<Pet> _pets = new List<Pet>();
         public IEnumerable<Pet> ReadAll()
         {
             return _pets;
