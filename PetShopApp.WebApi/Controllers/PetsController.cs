@@ -21,36 +21,37 @@ namespace PetShopApp.WebApi.Controllers
         }
         // GET: api/<PetsController>
         [HttpGet]
-        public List<Pet> Get()
+        public ActionResult<List<Pet>> Get()
         {
             return _petService.GetAllPets();
         }
 
         // GET api/<PetsController>/5
         [HttpGet("{id}")]
-        public Pet Get(int id)
+        public ActionResult<Pet> Get(int id)
         {
             return _petService.FindPetById(id);
         }
 
         // POST api/<PetsController>
         [HttpPost]
-        public void Post([FromBody] Pet pet)
+        public ActionResult<Pet> Post([FromBody] Pet pet)
         {
-            _petService.CreatePet(pet);
+            return _petService.CreatePet(pet);
         }
 
         // PUT api/<PetsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<Pet> Put(int id, [FromBody] Pet pet)
         {
+            return _petService.UpdatePet(pet);
         }
 
         // DELETE api/<PetsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<Pet> Delete(int id)
         {
-            _petService.DeletePet(id);
+            return _petService.DeletePet(id);
         }
     }
 }
