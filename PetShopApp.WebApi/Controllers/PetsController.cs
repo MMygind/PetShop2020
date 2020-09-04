@@ -28,9 +28,9 @@ namespace PetShopApp.WebApi.Controllers
 
         // GET api/<PetsController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Pet Get(int id)
         {
-            return "value";
+            return _petService.FindPetById(id);
         }
 
         // POST api/<PetsController>
@@ -50,6 +50,7 @@ namespace PetShopApp.WebApi.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _petService.DeletePet(id);
         }
     }
 }

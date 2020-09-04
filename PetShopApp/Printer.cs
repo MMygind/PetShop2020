@@ -16,7 +16,7 @@ namespace ConsoleApp
             InitData();
         }
 
-        void InitData()
+        public void InitData()
         {
             var pet1 = new Pet()
             {

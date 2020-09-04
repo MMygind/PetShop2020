@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using PetShopApp.Core.ApplicationService;
 using PetShopApp.Core.ApplicationService.Services;
 using PetShopApp.Core.DomainService;
+using PetShopApp.Infrastructure.Static.Data;
 using PetShopApp.Infrastructure.Static.Data.Repositories;
 
 namespace PetShopApp.WebApi
@@ -40,6 +41,11 @@ namespace PetShopApp.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var repo = scope.ServiceProvider.GetService<IPetRepository>();
+                    new DataInitializer(repo).InitData();
+                }
             }
 
             app.UseHttpsRedirection();
