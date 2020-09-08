@@ -9,10 +9,12 @@ namespace PetShopApp.Infrastructure.Static.Data
     public class DataInitializer
     {
         private readonly IPetRepository _petRepo;
+        private readonly IOwnerRepository _ownerRepo;
 
-        public DataInitializer (IPetRepository petRepository)
+        public DataInitializer (IPetRepository petRepository, IOwnerRepository ownerRepository)
         {
             _petRepo = petRepository;
+            _ownerRepo = ownerRepository;
         }
 
         public void InitData()
@@ -40,6 +42,13 @@ namespace PetShopApp.Infrastructure.Static.Data
                 Price = 50.00
             };
             _petRepo.Create(pet2);
+
+            var owner1 = new Owner()
+            {
+                Name = "Michael Jackson",
+                Address = "Billy Jean"
+            };
+            _ownerRepo.Create(owner1);
 
         }
     }
