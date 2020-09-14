@@ -8,8 +8,8 @@ namespace PetShopApp.Infrastructure.Static.Data.Repositories
 {
     public class PetRepository: IPetRepository
     {
-        private static int id = 1;
-        private static List<Pet> _pets = new List<Pet>();
+        private int id = 1;
+        private List<Pet> _pets = new List<Pet>();
         public IEnumerable<Pet> ReadAll()
         {
             return _pets;

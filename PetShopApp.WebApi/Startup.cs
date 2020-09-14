@@ -31,22 +31,32 @@ namespace PetShopApp.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IPetRepository, PetRepository>();
+            services.AddSingleton<IPetRepository, PetRepository>();
             services.AddScoped<IPetService, PetService>();
-            services.AddScoped<IOwnerRepository, OwnerRepository>();
+            services.AddSingleton<IOwnerRepository, OwnerRepository>();
             services.AddScoped<IOwnerService, OwnerService>();
             services.AddControllers().AddNewtonsoftJson(o =>
             {
                 o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                o.SerializerSettings.MaxDepth = 5;
+            });
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1",
+                    new Microsoft.OpenApi.Models.OpenApiInfo
+                    {
+                        Title = "Swagger Demo API",
+                        Description = "Demo API for showing swagger",
+                        Version = "v1"
+                    });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            //if (env.IsDevelopment())
+            //{
                 app.UseDeveloperExceptionPage();
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
@@ -54,7 +64,7 @@ namespace PetShopApp.WebApi
                     var ownerRepo = scope.ServiceProvider.GetService<IOwnerRepository>();
                     new DataInitializer(petRepo, ownerRepo).InitData();
                 }
-            }
+            //}
 
             app.UseHttpsRedirection();
 
@@ -65,6 +75,13 @@ namespace PetShopApp.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger Demo API");
             });
         }
     }
