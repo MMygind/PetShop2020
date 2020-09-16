@@ -3,6 +3,7 @@ using PetShopApp.Core.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using PetShopApp.Infrastructure.Static.Data.Repositories;
 
 namespace PetShopApp.Infrastructure.Static.Data
 {
@@ -10,19 +11,31 @@ namespace PetShopApp.Infrastructure.Static.Data
     {
         private readonly IPetRepository _petRepo;
         private readonly IOwnerRepository _ownerRepo;
+        private readonly IPetTypeRepository _petTypeRepo;
 
-        public DataInitializer (IPetRepository petRepository, IOwnerRepository ownerRepository)
+        public static readonly List<PetType> PetTypes = new List<PetType>();
+
+
+        public DataInitializer (IPetRepository petRepository, IOwnerRepository ownerRepository, IPetTypeRepository petTypeRepository)
         {
             _petRepo = petRepository;
             _ownerRepo = ownerRepository;
+            _petTypeRepo = petTypeRepository;
         }
 
         public void InitData()
         {
+            var petType1 = new PetType()
+            {
+                Name = "Greyhound"
+            };
+            _petTypeRepo.Create(petType1);
+            PetTypes.Add(petType1);
+
             var pet1 = new Pet()
             {
                 Name = "Bob",
-                Type = "Dog",
+                Type = petType1,
                 Birthdate = new DateTime(2019, 05, 05),
                 SoldDate = new DateTime(2020, 05, 05),
                 Color = "Brown",
@@ -34,7 +47,7 @@ namespace PetShopApp.Infrastructure.Static.Data
             var pet2 = new Pet()
             {
                 Name = "Billy",
-                Type = "Cat",
+                Type = petType1,
                 Birthdate = new DateTime(2018, 05, 04),
                 SoldDate = new DateTime(2019, 04, 04),
                 Color = "Black",
@@ -49,6 +62,8 @@ namespace PetShopApp.Infrastructure.Static.Data
                 Address = "Billy Jean"
             };
             _ownerRepo.Create(owner1);
+
+            
 
         }
     }

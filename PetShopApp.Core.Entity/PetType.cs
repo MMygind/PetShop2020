@@ -4,11 +4,10 @@ using System.Text;
 
 namespace PetShopApp.Core.Entity
 {
-    public class Type
+    public class PetType
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int AmountOfLegs { get; set; }
         public List<Pet> Pets { get; set; }
     }
 }
