@@ -13,7 +13,7 @@ namespace PetShopApp.Core.ApplicationService
         List<Pet> GetAllByPrice();
         Pet DeletePet(int id);
 
-        Pet NewPet(string name, PetType type, DateTime birthDate, DateTime soldDate, string color, Owner previousOwner,
+        Pet NewPet(string name, PetType type, DateTime birthDate, DateTime soldDate, string color, string previousOwner,
             double price);
 
         Pet CreatePet(Pet pet);

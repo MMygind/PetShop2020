@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using PetShopApp.Core.DomainService;
 using PetShopApp.Core.Entity;
@@ -25,12 +24,15 @@ namespace PetShopApp.Infrastructure.Static.Data.Repositories
 
         public Owner ReadById(int id)
         {
-            return DataInitializer.Owners.Select(o => new Owner()
+            foreach (var owner in _owners)
             {
-                Id = o.Id,
-                Name = o.Name,
-                Address = o.Address
-            }).FirstOrDefault(o => o.Id == id);
+                if (owner.Id == id)
+                {
+                    return owner;
+                }
+            }
+
+            return null;
         }
 
         public Owner Update(Owner ownerUpdate)
