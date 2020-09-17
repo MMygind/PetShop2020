@@ -10,6 +10,8 @@ namespace PetShopApp.Core.ApplicationService
         List<Owner> GetAllOwners();
         Owner UpdateOwner(Owner ownerUpdate);
         Owner FindOwnerById(int id);
+        Owner FindOwnerByIdIncludePets(int id);
+
         Owner DeleteOwner(int id);
 
         Owner NewOwner(string name, string address);

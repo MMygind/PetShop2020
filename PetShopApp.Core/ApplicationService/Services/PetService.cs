@@ -45,7 +45,7 @@ namespace PetShopApp.Core.ApplicationService.Services
             return _petRepo.Delete(id);
         }
 
-        public Pet NewPet(string name, PetType type, DateTime birthDate, DateTime soldDate, string color, string previousOwner,
+        public Pet NewPet(string name, PetType type, DateTime birthDate, DateTime soldDate, string color, Owner previousOwner,
             double price)
         {
             var pet = new Pet()
