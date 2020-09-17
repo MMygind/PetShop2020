@@ -33,15 +33,6 @@ namespace PetShopApp.Core.ApplicationService.Services
             return _petTypeRepo.ReadById(id);
         }
 
-        public PetType FindPetTypeByIdIncludePets(int id)
-        {
-            var petType = _petTypeRepo.ReadById(id);
-            petType.Pets = _petRepo.ReadAll()
-                .Where(pet => pet.Type.Id == petType.Id)
-                .ToList();
-            return petType;
-        }
-
 
         public PetType DeletePetType(int id)
         {

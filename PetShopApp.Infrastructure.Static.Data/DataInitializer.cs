@@ -13,9 +13,6 @@ namespace PetShopApp.Infrastructure.Static.Data
         private readonly IOwnerRepository _ownerRepo;
         private readonly IPetTypeRepository _petTypeRepo;
 
-        public static readonly List<PetType> PetTypes = new List<PetType>();
-
-
         public DataInitializer (IPetRepository petRepository, IOwnerRepository ownerRepository, IPetTypeRepository petTypeRepository)
         {
             _petRepo = petRepository;
@@ -30,12 +27,11 @@ namespace PetShopApp.Infrastructure.Static.Data
                 Name = "Greyhound"
             };
             _petTypeRepo.Create(petType1);
-            PetTypes.Add(petType1);
 
             var pet1 = new Pet()
             {
                 Name = "Bob",
-                Type = petType1,
+                Type = "Dog",
                 Birthdate = new DateTime(2019, 05, 05),
                 SoldDate = new DateTime(2020, 05, 05),
                 Color = "Brown",
@@ -47,7 +43,7 @@ namespace PetShopApp.Infrastructure.Static.Data
             var pet2 = new Pet()
             {
                 Name = "Billy",
-                Type = petType1,
+                Type = "Cat",
                 Birthdate = new DateTime(2018, 05, 04),
                 SoldDate = new DateTime(2019, 04, 04),
                 Color = "Black",

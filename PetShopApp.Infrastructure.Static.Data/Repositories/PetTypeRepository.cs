@@ -25,12 +25,15 @@ namespace PetShopApp.Infrastructure.Static.Data.Repositories
 
         public PetType ReadById(int id)
         {
-            return DataInitializer.PetTypes.
-                Select(p => new PetType()
+            foreach (var petType in _petTypes)
+            {
+                if (petType.Id == id)
                 {
-                    Id = p.Id,
-                    Name = p.Name
-                }).FirstOrDefault(p => p.Id == id);
+                    return petType;
+                }
+            }
+
+            return null;
         }
 
         public PetType Update(PetType petTypeUpdate)

@@ -24,20 +24,46 @@ namespace PetShopApp.WebApi.Controllers
         [HttpGet]
         public ActionResult<List<Owner>> Get()
         {
-            return _ownerService.GetAllOwners();
+            try
+            {
+                return _ownerService.GetAllOwners();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Task failed successfully");
+            }
+            
         }
 
         // GET api/<OwnerController>/5
         [HttpGet("{id}")]
         public ActionResult<Owner> Get(int id)
         {
-            return _ownerService.FindOwnerById(id);
+            var owner = _ownerService.FindOwnerById(id);
+            if (owner == null)
+            {
+                return StatusCode(404, "Did not find Owner with ID " + id);
+            }
+
+            try
+            {
+                return _ownerService.FindOwnerById(id);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Task failed successfully");
+            }
+            
         }
 
         // POST api/<OwnerController>
         [HttpPost]
         public ActionResult<Owner> Post([FromBody] Owner owner)
         {
+            if (string.IsNullOrEmpty(owner.Name))
+            {
+                return StatusCode(500, "Name is required for Creating Owner");
+            }
             return _ownerService.CreateOwner(owner);
         }
 
@@ -45,14 +71,41 @@ namespace PetShopApp.WebApi.Controllers
         [HttpPut("{id}")]
         public ActionResult<Owner> Put(int id, [FromBody] Owner owner)
         {
-            return _ownerService.UpdateOwner(owner);
+            if (id < 1 || id != owner.Id)
+            {
+                return StatusCode(404, "Parameter Id and Owner Id must be the same");
+            }
+
+            try
+            {
+                return _ownerService.UpdateOwner(owner);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Task failed successfully");
+            }
+            
         }
 
         // DELETE api/<OwnerController>/5
         [HttpDelete("{id}")]
         public ActionResult<Owner> Delete(int id)
         {
-            return _ownerService.DeleteOwner(id);
+            var owner = _ownerService.DeleteOwner(id);
+            if (owner == null)
+            {
+                return StatusCode(404, "Did not find Owner with ID " + id);
+            }
+
+            try
+            {
+                return _ownerService.DeleteOwner(id);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Task failed successfully");
+            }
+            
         }
     }
 }

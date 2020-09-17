@@ -23,20 +23,48 @@ namespace PetShopApp.WebApi.Controllers
         [HttpGet]
         public ActionResult<List<PetType>> Get()
         {
-            return _petTypeService.GetAllPetTypes();
+            try
+            {
+                return _petTypeService.GetAllPetTypes();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Task failed successfully");
+            }
+            
         }
 
         // GET api/<PetTypeController>/5
         [HttpGet("{id}")]
         public ActionResult<PetType> Get(int id)
         {
-            return _petTypeService.FindPetTypeByIdIncludePets(id);
+            var petType = _petTypeService.FindPetTypeById(id);
+            if (petType == null)
+            {
+                return StatusCode(404, "Did not find PetType with ID " + id);
+            }
+
+            try
+            {
+                return _petTypeService.FindPetTypeById(id);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Task failed successfully");
+            }
+
         }
 
         // POST api/<PetTypeController>
         [HttpPost]
         public ActionResult<PetType> Post([FromBody] PetType petType)
         {
+            if (string.IsNullOrEmpty(petType.Name))
+            {
+                return StatusCode(500, "Name is required for Creating PetType");
+            }
+
+
             return _petTypeService.CreatePetType(petType);
         }
 
@@ -44,14 +72,41 @@ namespace PetShopApp.WebApi.Controllers
         [HttpPut("{id}")]
         public ActionResult<PetType> Put(int id, [FromBody] PetType petType)
         {
-            return _petTypeService.UpdatePetType(petType);
+            if (id < 1 || id != petType.Id)
+            {
+                return StatusCode(404, "Parameter Id and PetType Id must be the same");
+            }
+
+            try
+            {
+                return _petTypeService.UpdatePetType(petType);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Task failed successfully");
+            }
+            
         }
 
         // DELETE api/<PetTypeController>/5
         [HttpDelete("{id}")]
         public ActionResult<PetType> Delete(int id)
         {
-            return _petTypeService.DeletePetType(id);
+            var petType = _petTypeService.DeletePetType(id);
+            if (petType == null)
+            {
+                return StatusCode(404, "Did not find PetType with ID " + id);
+            }
+
+            try
+            {
+                return _petTypeService.DeletePetType(id);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Task failed successfully");
+            }
+            
         }
     }
 }
