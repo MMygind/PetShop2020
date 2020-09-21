@@ -54,7 +54,7 @@ namespace PetShopApp.Infrastructure.Static.Data
 
             var owner1 = new Owner()
             {
-                Name = "Michael Jackson",
+                Name = "Michael",
                 Address = "Billy Jean"
             };
             _ownerRepo.Create(owner1);

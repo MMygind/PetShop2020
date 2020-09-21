@@ -15,5 +15,6 @@ namespace PetShopApp.Core.ApplicationService
         Owner NewOwner(string name, string address);
 
         Owner CreateOwner(Owner owner);
+        List<Owner> GetAllByName(string name);
     }
 }

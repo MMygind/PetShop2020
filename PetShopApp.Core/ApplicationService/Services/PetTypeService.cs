@@ -52,5 +52,12 @@ namespace PetShopApp.Core.ApplicationService.Services
         {
             return _petTypeRepo.Create(petType);
         }
+
+        public List<PetType> GetAllByName(string name)
+        {
+            var list = _petTypeRepo.ReadAll();
+            var queryContinued = list.Where(petType => petType.Name.Equals(name));
+            return queryContinued.ToList();
+        }
     }
 }

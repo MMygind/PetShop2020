@@ -15,10 +15,12 @@ namespace PetShopApp.WebApi.Controllers
     public class PetsController : ControllerBase
     {
         private readonly IPetService _petService;
+
         public PetsController(IPetService petService)
         {
             _petService = petService;
         }
+
         // GET: api/<PetsController>
         [HttpGet]
         public ActionResult<List<Pet>> Get()
@@ -31,7 +33,7 @@ namespace PetShopApp.WebApi.Controllers
             {
                 return StatusCode(500, "Task failed successfully");
             }
-            
+
         }
 
         // GET api/<PetsController>/5
@@ -52,7 +54,7 @@ namespace PetShopApp.WebApi.Controllers
             {
                 return StatusCode(500, "Task failed successfully");
             }
-            
+
         }
 
         // POST api/<PetsController>
@@ -84,7 +86,7 @@ namespace PetShopApp.WebApi.Controllers
             {
                 return StatusCode(500, "Task failed successfully");
             }
-            
+
         }
 
         // DELETE api/<PetsController>/5
@@ -100,6 +102,22 @@ namespace PetShopApp.WebApi.Controllers
             try
             {
                 return _petService.DeletePet(id);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Task failed successfully");
+            }
+
+        }
+
+        // GET api/<PetsController>/5
+        [HttpGet("{type}")]
+        [Route("[action]/{type}")]
+        public ActionResult<List<Pet>> GetFiltered(string type)
+        {
+            try
+            {
+                return _petService.GetAllByType(type);
             }
             catch (Exception e)
             {

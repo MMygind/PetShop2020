@@ -107,5 +107,21 @@ namespace PetShopApp.WebApi.Controllers
             }
             
         }
+
+        // GET api/<OwnerController>/5
+        [HttpGet("{name}")]
+        [Route("[action]/{name}")]
+        public ActionResult<List<Owner>> GetFiltered(string name)
+        {
+            try
+            {
+                return _ownerService.GetAllByName(name);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Task failed successfully");
+            }
+            
+        }
     }
 }

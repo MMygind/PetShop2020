@@ -51,5 +51,12 @@ namespace PetShopApp.Core.ApplicationService.Services
         {
             return _ownerRepo.Create(owner);
         }
+
+        public List<Owner> GetAllByName(string name)
+        {
+            var list = _ownerRepo.ReadAll();
+            var queryContinued = list.Where(owner => owner.Name.Equals(name));
+            return queryContinued.ToList();
+        }
     }
 }
