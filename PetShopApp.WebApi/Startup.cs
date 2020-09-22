@@ -17,6 +17,7 @@ using PetShopApp.Core.ApplicationService.Services;
 using PetShopApp.Core.DomainService;
 using PetShopApp.Core.Entity;
 using PetShopApp.Infrastructure.SQLite.Data;
+using PetShopApp.Infrastructure.SQLite.Data.Repositories;
 using PetShopApp.Infrastructure.Static.Data;
 using PetShopApp.Infrastructure.Static.Data.Repositories;
 
@@ -44,6 +45,8 @@ namespace PetShopApp.WebApi
             services.AddScoped<IOwnerService, OwnerService>();
             services.AddSingleton<IPetTypeRepository, PetTypeRepository>();
             services.AddScoped<IPetTypeService, PetTypeService>();
+            services.AddScoped<IPetRepository, PetDBRepository>();
+            services.AddScoped<IOwnerRepository, OwnerDBRepository>();
             services.AddControllers().AddNewtonsoftJson(o =>
             {
                 o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;

@@ -7,11 +7,11 @@ using System.Text;
 
 namespace PetShopApp.Infrastructure.SQLite.Data.Repositories
 {
-    public class PetRepository : IPetRepository
+    public class PetDBRepository : IPetRepository
     {
         private PetShopAppLiteContext _ctx;
 
-        public PetRepository(PetShopAppLiteContext ctx)
+        public PetDBRepository(PetShopAppLiteContext ctx)
         {
             _ctx = ctx;
         }
