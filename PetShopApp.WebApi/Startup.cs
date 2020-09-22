@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using PetShopApp.Core.ApplicationService;
 using PetShopApp.Core.ApplicationService.Services;
 using PetShopApp.Core.DomainService;
+using PetShopApp.Infrastructure.SQLite.Data;
 using PetShopApp.Infrastructure.Static.Data;
 using PetShopApp.Infrastructure.Static.Data.Repositories;
 
@@ -31,6 +32,11 @@ namespace PetShopApp.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddDbContext<PetShopAppLiteContext>(opt =>
+            //{
+            //    opt.UseSqlite("Data Source=petshopApp.db");
+            //    });
+
             services.AddSingleton<IPetRepository, PetRepository>();
             services.AddScoped<IPetService, PetService>();
             services.AddSingleton<IOwnerRepository, OwnerRepository>();
