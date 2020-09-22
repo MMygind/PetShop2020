@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,6 +15,7 @@ using Newtonsoft.Json;
 using PetShopApp.Core.ApplicationService;
 using PetShopApp.Core.ApplicationService.Services;
 using PetShopApp.Core.DomainService;
+using PetShopApp.Core.Entity;
 using PetShopApp.Infrastructure.SQLite.Data;
 using PetShopApp.Infrastructure.Static.Data;
 using PetShopApp.Infrastructure.Static.Data.Repositories;
@@ -32,11 +34,10 @@ namespace PetShopApp.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<PetShopAppLiteContext>(opt =>
-            //{
-            //    opt.UseSqlite("Data Source=petshopApp.db");
-            //    });
+            services.AddDbContext<PetShopAppLiteContext>(opt => opt.UseInMemoryDatabase("ThaDB"));
 
+            services.AddDbContext<PetShopAppLiteContext>(opt => opt.UseSqlite("Data Source=petShopApp.db"));
+            
             services.AddSingleton<IPetRepository, PetRepository>();
             services.AddScoped<IPetService, PetService>();
             services.AddSingleton<IOwnerRepository, OwnerRepository>();
@@ -63,17 +64,20 @@ namespace PetShopApp.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
+                    var ctx = scope.ServiceProvider.GetService<PetShopAppLiteContext>();
+                    DBInitializer.SeedDB(ctx);
+
                     var petRepo = scope.ServiceProvider.GetService<IPetRepository>();
                     var ownerRepo = scope.ServiceProvider.GetService<IOwnerRepository>();
                     var petTypeRepo = scope.ServiceProvider.GetService<IPetTypeRepository>();
                     new DataInitializer(petRepo, ownerRepo, petTypeRepo).InitData();
                 }
-            //}
+            }
 
             app.UseHttpsRedirection();
 

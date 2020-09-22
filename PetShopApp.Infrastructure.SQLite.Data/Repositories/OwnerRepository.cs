@@ -19,7 +19,7 @@ namespace PetShopApp.Infrastructure.SQLite.Data.Repositories
         {
             var ownerEntry = _ctx.Add(owner);
             _ctx.SaveChanges();
-            return ownerEntry.Entity();
+            return ownerEntry.Entity;
         }
 
         public Owner Delete(int id)
@@ -29,7 +29,7 @@ namespace PetShopApp.Infrastructure.SQLite.Data.Repositories
 
         public IEnumerable<Owner> ReadAll()
         {
-            throw new NotImplementedException();
+            return _ctx.Owners;
         }
 
         public Owner ReadById(int id)

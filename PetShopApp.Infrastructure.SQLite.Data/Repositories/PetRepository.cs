@@ -29,7 +29,7 @@ namespace PetShopApp.Infrastructure.SQLite.Data.Repositories
 
         public IEnumerable<Pet> ReadAll()
         {
-            return _ctx.Pets.ToList();
+            return _ctx.Pets;
         }
 
         public Pet ReadById(int id)
