@@ -39,9 +39,9 @@ namespace PetShopApp.WebApi
 
             services.AddDbContext<PetShopAppLiteContext>(opt => opt.UseSqlite("Data Source=petShopApp.db"));
             
-            services.AddSingleton<IPetRepository, PetRepository>();
+            //services.AddSingleton<IPetRepository, PetRepository>();
             services.AddScoped<IPetService, PetService>();
-            services.AddSingleton<IOwnerRepository, OwnerRepository>();
+            //services.AddSingleton<IOwnerRepository, OwnerRepository>();
             services.AddScoped<IOwnerService, OwnerService>();
             services.AddSingleton<IPetTypeRepository, PetTypeRepository>();
             services.AddScoped<IPetTypeService, PetTypeService>();

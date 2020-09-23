@@ -102,9 +102,9 @@ namespace PetShopApp.WebApi.Controllers
 
             try
             {
-                return _petService.DeletePet(id);
+                return pet;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(500, "Task failed successfully");
             }

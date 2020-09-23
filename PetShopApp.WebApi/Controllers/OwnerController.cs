@@ -100,9 +100,9 @@ namespace PetShopApp.WebApi.Controllers
 
             try
             {
-                return _ownerService.DeleteOwner(id);
+                return owner;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(500, "Task failed successfully");
             }
