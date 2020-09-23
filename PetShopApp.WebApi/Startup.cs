@@ -78,7 +78,7 @@ namespace PetShopApp.WebApi
                     var petRepo = scope.ServiceProvider.GetService<IPetRepository>();
                     var ownerRepo = scope.ServiceProvider.GetService<IOwnerRepository>();
                     var petTypeRepo = scope.ServiceProvider.GetService<IPetTypeRepository>();
-                    new DataInitializer(petRepo, ownerRepo, petTypeRepo).InitData();
+                    //new DataInitializer(petRepo, ownerRepo, petTypeRepo).InitData();
                 }
             }
 

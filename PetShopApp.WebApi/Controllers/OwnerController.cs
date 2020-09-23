@@ -37,6 +37,7 @@ namespace PetShopApp.WebApi.Controllers
 
         // GET api/<OwnerController>/5
         [HttpGet("{id}")]
+        [Route("[action]/{id}")]
         public ActionResult<Owner> Get(int id)
         {
             var owner = _ownerService.FindOwnerById(id);

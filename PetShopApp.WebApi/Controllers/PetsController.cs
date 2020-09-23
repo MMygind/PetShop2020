@@ -38,6 +38,7 @@ namespace PetShopApp.WebApi.Controllers
 
         // GET api/<PetsController>/5
         [HttpGet("{id}")]
+        [Route("[action]/{id}")]
         public ActionResult<Pet> Get(int id)
         {
             var pet = _petService.FindPetById(id);
