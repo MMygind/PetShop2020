@@ -11,7 +11,20 @@ namespace PetShopApp.Infrastructure.SQLite.Data
         {
             ctx.Database.EnsureDeleted();
             ctx.Database.EnsureCreated();
-            var pet1 = ctx.Pets.Add(new Pet()
+
+            var owner1 = ctx.Owners.Add(new Owner()
+            {
+                Name = "Michael",
+                Address = "Billy Jean"
+            }).Entity;
+
+            var owner2 = ctx.Owners.Add(new Owner()
+            {
+                Name = "Harry",
+                Address = "Under the stairs"
+            }).Entity;
+
+            ctx.Pets.Add(new Pet()
             {
                 Name = "Bob",
                 Type = "Dog",
@@ -19,8 +32,9 @@ namespace PetShopApp.Infrastructure.SQLite.Data
                 SoldDate = new DateTime(2020, 05, 05),
                 Color = "Brown",
                 PreviousOwner = "Some guy",
-                Price = 5000.00
-            }).Entity;
+                Price = 5000.00,
+                Owner = owner1
+            });
 
             ctx.Pets.Add(new Pet()
             {
@@ -30,14 +44,11 @@ namespace PetShopApp.Infrastructure.SQLite.Data
                 SoldDate = new DateTime(2020, 05, 05),
                 Color = "Black",
                 PreviousOwner = "Michael",
-                Price = 400.00
+                Price = 400.00,
+                Owner = owner2
             });
 
-            ctx.Owners.Add(new Owner()
-            {
-                Name = "Michael",
-                Address = "Billy Jean"
-            });
+            
             ctx.SaveChanges();
         }
     }

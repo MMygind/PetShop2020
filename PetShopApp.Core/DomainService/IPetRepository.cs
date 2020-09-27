@@ -12,6 +12,7 @@ namespace PetShopApp.Core.DomainService
         Pet ReadById(int id);
         Pet Update(Pet petUpdate);
         Pet Delete(int id);
+        Pet ReadByIdIncludeOwners(int id);
 
     }
 }

@@ -38,7 +38,12 @@ namespace PetShopApp.Core.ApplicationService.Services
             return _petRepo.ReadById(id);
         }
 
-        
+        public Pet FindPetByIdIncludeOwners(int id)
+        {
+            var pet = _petRepo.ReadByIdIncludeOwners(id);
+            return pet;
+        }
+
 
         public Pet DeletePet(int id)
         {

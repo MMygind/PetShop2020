@@ -40,7 +40,7 @@ namespace PetShopApp.WebApi.Controllers
         [Route("[action]/{id}")]
         public ActionResult<Owner> Get(int id)
         {
-            var owner = _ownerService.FindOwnerById(id);
+            var owner = _ownerService.FindOwnerByIdIncludePets(id);
             if (owner == null)
             {
                 return StatusCode(404, "Did not find Owner with ID " + id);

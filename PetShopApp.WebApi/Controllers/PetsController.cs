@@ -41,7 +41,7 @@ namespace PetShopApp.WebApi.Controllers
         [Route("[action]/{id}")]
         public ActionResult<Pet> Get(int id)
         {
-            var pet = _petService.FindPetById(id);
+            var pet = _petService.FindPetByIdIncludeOwners(id);
             if (pet == null)
             {
                 return StatusCode(404, "Did not find Pet with ID " + id);

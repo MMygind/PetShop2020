@@ -64,5 +64,10 @@ namespace PetShopApp.Infrastructure.Static.Data.Repositories
 
             return null;
         }
+
+        public Pet ReadByIdIncludeOwners(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

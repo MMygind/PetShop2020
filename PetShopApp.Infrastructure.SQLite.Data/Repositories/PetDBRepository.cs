@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace PetShopApp.Infrastructure.SQLite.Data.Repositories
 {
@@ -29,9 +30,17 @@ namespace PetShopApp.Infrastructure.SQLite.Data.Repositories
             return petRemoved;
         }
 
+        public Pet ReadByIdIncludeOwners(int id)
+        {
+            return _ctx.Pets
+                .Include(p => p.Owner)
+                .FirstOrDefault(p => p.Id == id);
+        }
+
         public IEnumerable<Pet> ReadAll()
         {
-            return _ctx.Pets;
+            return _ctx.Pets
+                .Include(p => p.Owner);
         }
 
         public Pet ReadById(int id)

@@ -10,6 +10,7 @@ namespace PetShopApp.Core.ApplicationService
         List<Pet> GetAllPets();
         Pet UpdatePet(Pet petUpdate);
         Pet FindPetById(int id);
+        Pet FindPetByIdIncludeOwners(int id);
         List<Pet> GetAllByPrice();
         Pet DeletePet(int id);
 
