@@ -9,6 +9,14 @@ namespace PetShopApp.Infrastructure.SQLite.Data
     public class PetShopAppLiteContext: DbContext
     {
         public PetShopAppLiteContext(DbContextOptions<PetShopAppLiteContext> opt) : base(opt) { }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Pet>()
+                .HasOne(p => p.Owner)
+                .WithMany(o => o.Pets)
+                .OnDelete(DeleteBehavior.SetNull);
+        }
+
         public DbSet<Pet> Pets { get; set; }
         public DbSet<Owner> Owners { get; set; }
     }

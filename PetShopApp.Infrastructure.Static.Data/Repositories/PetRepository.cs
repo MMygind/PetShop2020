@@ -10,7 +10,7 @@ namespace PetShopApp.Infrastructure.Static.Data.Repositories
     {
         private int id = 1;
         private List<Pet> _pets = new List<Pet>();
-        public IEnumerable<Pet> ReadAll()
+        public IEnumerable<Pet> ReadAll(Filter filter)
         {
             return _pets;
         }

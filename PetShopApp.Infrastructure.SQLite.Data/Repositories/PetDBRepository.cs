@@ -18,9 +18,17 @@ namespace PetShopApp.Infrastructure.SQLite.Data.Repositories
         }
         public Pet Create(Pet pet)
         {
-            var petEntry = _ctx.Add(pet);
+            /*if (pet.Owner != null && _ctx.ChangeTracker.Entries<Pet>().FirstOrDefault(oe => oe.Entity.Id == pet.Owner.Id) == null)
+            {
+                _ctx.Attach(pet.Owner);
+            }
+            var petEntry = _ctx.Pets.Add(pet).Entity;
             _ctx.SaveChanges();
-            return petEntry.Entity;
+            return petEntry;*/
+
+            _ctx.Attach(pet).State = EntityState.Added;
+            _ctx.SaveChanges();
+            return pet;
         }
 
         public Pet Delete(int id)
@@ -37,10 +45,16 @@ namespace PetShopApp.Infrastructure.SQLite.Data.Repositories
                 .FirstOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Pet> ReadAll()
+        public IEnumerable<Pet> ReadAll(Filter filter)
         {
-            return _ctx.Pets
-                .Include(p => p.Owner);
+            if (filter == null)
+            {
+                return _ctx.Pets
+                    .Include(p => p.Owner);
+            }
+
+            return _ctx.Pets.Skip((filter.CurrentPage - 1) * filter.ItemsPrPage)
+                .Take(filter.ItemsPrPage);
         }
 
         public Pet ReadById(int id)
@@ -50,7 +64,21 @@ namespace PetShopApp.Infrastructure.SQLite.Data.Repositories
 
         public Pet Update(Pet petUpdate)
         {
-            throw new NotImplementedException();
+            /*if (petUpdate.Owner != null && _ctx.ChangeTracker.Entries<Pet>().FirstOrDefault(oe => oe.Entity.Id == petUpdate.Owner.Id) == null)
+            {
+                _ctx.Attach(petUpdate.Owner);
+            }
+            else
+            {
+                _ctx.Entry(petUpdate).Reference(p => p.Owner).IsModified = true;
+            }
+            var updated = _ctx.Update(petUpdate).Entity;
+            _ctx.SaveChanges();*/
+
+            _ctx.Attach(petUpdate).State = EntityState.Modified;
+            _ctx.Entry(petUpdate).Reference(p => p.Owner).IsModified = true;
+            _ctx.SaveChanges();
+            return petUpdate;
         }
     }
 }

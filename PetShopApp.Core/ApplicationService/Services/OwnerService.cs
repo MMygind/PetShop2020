@@ -23,10 +23,7 @@ namespace PetShopApp.Core.ApplicationService.Services
 
         public Owner UpdateOwner(Owner ownerUpdate)
         {
-            var owner = FindOwnerById(ownerUpdate.Id);
-            owner.Name = ownerUpdate.Name;
-            owner.Address = ownerUpdate.Address;
-            return owner;
+            return _ownerRepo.Update(ownerUpdate);
         }
 
         public Owner FindOwnerById(int id)

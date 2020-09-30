@@ -8,6 +8,7 @@ namespace PetShopApp.Core.ApplicationService
     public interface IPetService
     {
         List<Pet> GetAllPets();
+        List<Pet> GetFilteredPets(Filter filter);
         Pet UpdatePet(Pet petUpdate);
         Pet FindPetById(int id);
         Pet FindPetByIdIncludeOwners(int id);
