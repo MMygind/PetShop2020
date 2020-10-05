@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,12 +12,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using PetShopApp.Core.ApplicationService;
 using PetShopApp.Core.ApplicationService.Services;
 using PetShopApp.Core.DomainService;
 using PetShopApp.Core.Entity;
 using PetShopApp.Infrastructure.SQLite.Data;
+using PetShopApp.Infrastructure.SQLite.Data.Helpers;
 using PetShopApp.Infrastructure.SQLite.Data.Repositories;
 using PetShopApp.Infrastructure.Static.Data;
 using PetShopApp.Infrastructure.Static.Data.Repositories;
@@ -47,10 +50,14 @@ namespace PetShopApp.WebApi
             services.AddScoped<IPetTypeService, PetTypeService>();
             services.AddScoped<IPetRepository, PetDBRepository>();
             services.AddScoped<IOwnerRepository, OwnerDBRepository>();
-            services.AddControllers().AddNewtonsoftJson(o =>
-            {
-                o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            });
+            
+
+
+
+
+
+
+
 
             services.AddSwaggerGen(options =>
             {
@@ -61,6 +68,59 @@ namespace PetShopApp.WebApi
                         Description = "Demo API for showing swagger",
                         Version = "v1"
                     });
+            });
+
+            Byte[] secretBytes = new byte[40];
+            Random rand = new Random();
+            rand.NextBytes(secretBytes);
+
+            // Add JWT based authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = false,
+                    //ValidAudience = "TodoApiClient",
+                    ValidateIssuer = false,
+                    //ValidIssuer = "TodoApi",
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(secretBytes),
+                    ValidateLifetime = true, //validate the expiration and not before values in the token
+                    ClockSkew = TimeSpan.FromMinutes(5) //5 minute tolerance for the expiration date
+                };
+            });
+
+            // In-memory database:
+            services.AddDbContext<PetShopAppLiteContext>(opt => opt.UseInMemoryDatabase("TodoList"));
+
+            // Register repositories for dependency injection
+            services.AddScoped<IUserRepository<TodoItem>, TodoItemRepository>();
+            services.AddScoped<IUserRepository<User>, UserRepository>();
+
+            // Register database initializer
+            services.AddTransient<DBInitializer>();
+
+            // Register the AuthenticationHelper in the helpers folder for dependency
+            // injection. It must be registered as a singleton service. The AuthenticationHelper
+            // is instantiated with a parameter. The parameter is the previously created
+            // "secretBytes" array, which is used to generate a key for signing JWT tokens,
+            services.AddSingleton<IAuthenticationHelper>(new
+                AuthenticationHelper(secretBytes));
+
+            // Configure the default CORS policy.
+            services.AddCors(options =>
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    })
+            );
+
+
+
+            services.AddControllers().AddNewtonsoftJson(o =>
+            {
+                o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
         }
 
@@ -85,6 +145,8 @@ namespace PetShopApp.WebApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

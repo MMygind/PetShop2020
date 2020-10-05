@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.EntityFrameworkCore.Internal;
 using PetShopApp.Core.Entity;
 
 namespace PetShopApp.Infrastructure.SQLite.Data
@@ -48,7 +49,37 @@ namespace PetShopApp.Infrastructure.SQLite.Data
                 Owner = owner2
             });
 
-            
+            // Look for any TodoItems
+            if (ctx.TodoItems.Any())
+            {
+                return;   // DB has been seeded
+            }
+
+            List<TodoItem> items = new List<TodoItem>
+            {
+                new TodoItem { IsComplete=true, Name="Make homework"},
+                new TodoItem { IsComplete=false, Name="Sleep"}
+            };
+
+            // Create two users with hashed and salted passwords
+            List<User> users = new List<User>
+            {
+                new User {
+                    Username = "UserJoe",
+                    Password = "1234",
+                    IsAdmin = false
+                },
+                new User {
+                    Username = "AdminAnn",
+                    Password = "1234",
+                    IsAdmin = true
+                }
+            };
+
+            ctx.TodoItems.AddRange(items);
+            ctx.Users.AddRange(users);
+
+
             ctx.SaveChanges();
         }
     }
