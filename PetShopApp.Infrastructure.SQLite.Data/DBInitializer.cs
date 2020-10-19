@@ -3,15 +3,27 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore.Internal;
 using PetShopApp.Core.Entity;
+using PetShopApp.Infrastructure.SQLite.Data.Helpers;
 
 namespace PetShopApp.Infrastructure.SQLite.Data
 {
-    public class DBInitializer
+    public class DBInitializer: IDBInitializer
     {
-        public static void SeedDB(PetShopAppLiteContext ctx)
+        private IAuthenticationHelper authenticationHelper;
+
+        public DBInitializer(IAuthenticationHelper authHelper)
+        {
+            authenticationHelper = authHelper;
+        }
+        public void SeedDB(PetShopAppLiteContext ctx)
         {
             ctx.Database.EnsureDeleted();
             ctx.Database.EnsureCreated();
+
+            if (ctx.TodoItems.Any())
+            {
+                return;   // DB has been seeded
+            }
 
             var owner1 = ctx.Owners.Add(new Owner()
             {
@@ -49,11 +61,8 @@ namespace PetShopApp.Infrastructure.SQLite.Data
                 Owner = owner2
             });
 
-            // Look for any TodoItems
-            if (ctx.TodoItems.Any())
-            {
-                return;   // DB has been seeded
-            }
+            //Look for any TodoItems
+            
 
             List<TodoItem> items = new List<TodoItem>
             {
@@ -61,17 +70,24 @@ namespace PetShopApp.Infrastructure.SQLite.Data
                 new TodoItem { IsComplete=false, Name="Sleep"}
             };
 
-            // Create two users with hashed and salted passwords
+            string password = "1234";
+            byte[] passwordHashJoe, passwordSaltJoe, passwordHashAnn, passwordSaltAnn;
+            authenticationHelper.CreatePasswordHash(password, out passwordHashJoe, out passwordSaltJoe);
+            authenticationHelper.CreatePasswordHash(password, out passwordHashAnn, out passwordSaltAnn);
+
+            //Create two users with hashed and salted passwords
             List<User> users = new List<User>
             {
                 new User {
                     Username = "UserJoe",
-                    Password = "1234",
+                    PasswordHash = passwordHashJoe,
+                    PasswordSalt = passwordSaltJoe,
                     IsAdmin = false
                 },
                 new User {
                     Username = "AdminAnn",
-                    Password = "1234",
+                    PasswordHash = passwordHashAnn,
+                    PasswordSalt = passwordSaltAnn,
                     IsAdmin = true
                 }
             };

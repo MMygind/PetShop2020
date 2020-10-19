@@ -98,7 +98,7 @@ namespace PetShopApp.WebApi
             services.AddScoped<IUserRepository<User>, UserRepository>();
 
             // Register database initializer
-            services.AddTransient<DBInitializer>();
+            services.AddTransient<IDBInitializer, DBInitializer>();
 
             // Register the AuthenticationHelper in the helpers folder for dependency
             // injection. It must be registered as a singleton service. The AuthenticationHelper
@@ -132,8 +132,10 @@ namespace PetShopApp.WebApi
                 app.UseDeveloperExceptionPage();
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    var ctx = scope.ServiceProvider.GetService<PetShopAppLiteContext>();
-                    DBInitializer.SeedDB(ctx);
+                    var services = scope.ServiceProvider;
+                    var ctx = services.GetService<PetShopAppLiteContext>();
+                    var dbInitializer = services.GetService<IDBInitializer>();
+                    dbInitializer.SeedDB(ctx);
 
                     var petRepo = scope.ServiceProvider.GetService<IPetRepository>();
                     var ownerRepo = scope.ServiceProvider.GetService<IOwnerRepository>();
