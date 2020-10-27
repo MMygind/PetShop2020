@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using PetShopApp.Core.Entity;
 using PetShopApp.Infrastructure.SQLite.Data.Helpers;
@@ -22,7 +23,12 @@ namespace PetShopApp.Infrastructure.SQLite.Data
 
             if (ctx.TodoItems.Any())
             {
-                return;   // DB has been seeded
+                return;
+                //ctx.Database.ExecuteSqlRaw("DROP TABLE Pets");
+                //ctx.Database.ExecuteSqlRaw("DROP Table Owner");
+                //ctx.Database.ExecuteSqlRaw("DROP Table Todo");
+                //ctx.Database.ExecuteSqlRaw("DROP Table Token");
+                //ctx.Database.EnsureCreated();
             }
 
             var owner1 = ctx.Owners.Add(new Owner()
